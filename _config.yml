@@ -92,7 +92,7 @@ comments:
     shortname:    # fill with the Disqus shortname. › https://help.disqus.com/en/articles/1717111-what-s-a-shortname
   # utterances settings › https://utteranc.es/
   utterances:
-    repo: sopiro/sopiro.github.io        # <gh-username>/<repo>
+    repo: sopiro/blog-comments        # <gh-username>/<repo>
     issue_term: title  # < url | pathname | title | ...>
 
 paginate: 10
