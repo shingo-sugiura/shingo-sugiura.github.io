@@ -52,6 +52,3 @@ $\therefore v_2 = \bar v_2 + M^{-1} \cdot J^T \cdot (J M^{-1} J^T)^{-1} \cdot -(
 이 글에서 정리한 내용은 물리엔진 constraint에 대한 내용 속에서 핵심적인 내용이긴 하지만 아주 일부이다. 언급 안한 bias $b$ 에도 많은 내용이 숨겨져 있다.. positional error correction, soft constraint 등등.. 또한 왜 acceleration 레벨이 아닌 velocity 레벨에서 impulse로 constraint를 해결하는지.. 이러한 내용들도 다 정확히 이해해야 한다.
 
 기회가 된다면 물리엔진 튜토리얼 글을 쓰고 싶다.
-
-아래는 내가 만든 물리엔진 깃허브 링크  
-[https://github.com/Sopiro/Physics]
