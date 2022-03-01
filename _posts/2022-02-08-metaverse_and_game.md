@@ -1,5 +1,5 @@
 ---
-title: Metaverse and Games
+title: Metaverse and Games, 메타버스와 게임
 date: 2022-02-08 07:50:00 +/-TTTT
 categories: [Note, Tech]
 tags: [Metaverse]  
