@@ -17,7 +17,7 @@ math: true
 
 물리엔진은 이 시스템을 우리가 사는 세계처럼 물리적으로 옳게 보이는 constraint들을 하나 하나 정의하여 만든다. 예를 들어 어떤 강체(Rigid body)가 움직이다가 다른 강체와 겹쳐지는 상황을 생각해 보자. 아무런 constraint도 없는 시스템이라면 이런 상황은 문제될게 없다. 반면 non-penetration constraint가 정의된 시스템(물리엔진)이라면 이 상황은 문제되는 상황이고 적절하게 해결해야 한다.
 
-## Solving violated velocity constraint  
+## Modeling and solving constraint  
 
 어떤 오브젝트의 position 정보를 이용하여 position constraint, $C=0$를 정의한다.  
 $C$를 미분하여 velocity constraint, $ \dot{C} = Jv$을 구한다.  
