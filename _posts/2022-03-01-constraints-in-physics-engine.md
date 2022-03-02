@@ -47,7 +47,7 @@ $\therefore v_2 = \bar v_2 + M^{-1} \cdot J^T \cdot (J M^{-1} J^T)^{-1} \cdot -(
 
 ## Conclusion
 
-물리엔진은 정말 모든것을 constraint로 정의한다. 위에서 언급한 non-penetration constraint뿐만 아니라 다양한 관절(joint)들 심지어 모터, 도르래 같은 것들도 모두 다 constraint로 정의한다. 또한 constraint마다 jacobian $J$ 만 다르기 때문에 solve 과정 모든 constraint에 대해 일관적(unified way)이다.  
+물리엔진은 정말 모든것을 constraint로 정의한다. 위에서 언급한 non-penetration constraint뿐만 아니라 다양한 관절(joint)들 심지어 모터, 도르래 같은 것들도 모두 다 constraint로 정의한다. 또한 constraint마다 jacobian $J$ 만 다르기 때문에 solve 과정이 모든 constraint에 대해 일관적(unified way)이다.  
 
 이 글에서 정리한 내용은 물리엔진 constraint에 대한 내용 속에서 핵심적인 내용이긴 하지만 아주 일부이다. 언급 안한 bias $b$ 에도 많은 내용이 숨겨져 있다.. positional error correction, soft constraint 등등.. 또한 왜 acceleration 레벨이 아닌 velocity 레벨에서 impulse로 constraint를 해결하는지 등등 이러한 내용들도 다 정확히 이해해야 한다.
 
