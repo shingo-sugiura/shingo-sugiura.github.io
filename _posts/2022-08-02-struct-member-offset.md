@@ -108,8 +108,7 @@ int main()
 
 이런 규칙대로 컴파일러는 구조체 멤버 사이사이에 패딩을 넣는데 그 이유는 CPU 메모리 엑세스 패턴과 관련하여 최적화 하기 위함이라고 한다. 위와 같이 잘 데이터가 정렬되어 있으면 *naturally aligned* 라고 표한하고 아니라면 *misaligned* 라고 표현 한다고 한다. misaligned된 데이터도 동작하긴 하지만 퍼포먼스 차이가 상당하다.(정말로 심하게 차이난다) 그러므로 pragma pack 같은 전처리 지시자를 이용해서 packing, alignment를 프로그래머가 컨트롤 할 수도 있지만 메모리가 정말 부족한 환경이 아니라면 그대로 두는게 좋다.
 
-<https://docs.microsoft.com/en-us/cpp/cpp/alignment-cpp-declarations?view=msvc-170>
-
+* https://docs.microsoft.com/en-us/cpp/cpp/alignment-cpp-declarations?view=msvc-170
 
 ## 정리
 
