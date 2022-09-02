@@ -41,9 +41,9 @@ $Jv_2 + b = 0\;(\because \dot C = Jv+b = 0)$
 $J(\bar v_2 + M^{-1} \cdot P_c) + b = 0$  
 $J(\bar v_2 + M^{-1} \cdot J^T \lambda) + b = 0$  
 $J\bar v_2 + J \cdot M^{-1} \cdot J^T \cdot \lambda + b = 0$  
-$\lambda = (J M^{-1} J^T)^{-1} \cdot -(Jv + b)$  
-$P_c = J^T \cdot (J M^{-1} J^T)^{-1} \cdot -(Jv + b)$  
-$\therefore v_2 = \bar v_2 + M^{-1} \cdot J^T \cdot (J M^{-1} J^T)^{-1} \cdot -(Jv + b)$  
+$\lambda = (J M^{-1} J^T)^{-1} \cdot -(J\bar v_2 + b)$  
+$P_c = J^T \cdot (J M^{-1} J^T)^{-1} \cdot -(J\bar v_2 + b)$  
+$\therefore v_2 = \bar v_2 + M^{-1} \cdot J^T \cdot (J M^{-1} J^T)^{-1} \cdot -(J\bar v_2 + b)$  
 
 ## Conclusion
 
