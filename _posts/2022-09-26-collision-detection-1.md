@@ -77,8 +77,6 @@ bool TestPoint(const AABB& aabb, const Vec2& p)
 
 ```
 
-점이 포함되는 경우를 기준으로 코드를 작성하게 된다면 위 코드에서 모든 등호가 반대로 되고 and 로 엮여야 하기 때문에 4번 모두 확인해야 하지만 점이 포함되지 않는 경우라면 위 4가지 판별중에 하나만 false라면 early return 할 수 있다. 사족이 길지만 나름의 최적화라고 할 수 있겠다.  
-
 ## Convex polygon이 점을 포함하는지 판별하기
 
 Convex polygon(볼록 폴리곤)은 도형을 가로지르는 선분이 도형의 Edge를 딱 2번만 만나는 도형을 말한다. (Edge의 tangent나 꼭지점을 지나는 경우 말고) 반대로는 Concave polygon이 있다. 앞으로 다룰 모든 충돌 관련 알고리즘은 Convex polygon에 대해 다룰것이다. 충돌 검출에 있어서 Convex polygon의 특성은 여러 경우에서 간단한 형태로 계산할 수 있도록 해준다. ( 도형 내부 임의의 선분이 polygon의 edge와 충돌하지 않는 다는 특성 등등)

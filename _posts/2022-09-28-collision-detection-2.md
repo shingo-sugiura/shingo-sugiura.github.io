@@ -41,7 +41,7 @@ bool TestOverlap(const AABB& a, const AABB& b)
 
 ```
 
-하한이 상한보다 크거나 상한이 하한보다 작으면 비충돌이다. 이전 포스트 AABB vs. Point와 마찬가지로 early return을 고려해 코드를 작성한다.  
+하한이 상한보다 크거나 상한이 하한보다 작으면 비충돌이다.  
 
 원 vs. 원, AABB vs. AABB 충돌은 어떻게 보면 특수한(?) 경우이고 간단하게 충돌 판별이 가능하다. 하지만 많은 경우 충돌을 검출하고자 하는 오브젝트는 복잡한 모양이다. 적어도 단순한 박스 형태가 아닌 Convex 폴리곤 형태이고 회전도 같이 고려되어야 한다.  
 
@@ -50,26 +50,90 @@ bool TestOverlap(const AABB& a, const AABB& b)
 
 ## Convex polygon간의 충돌 (SAT)
 
-이제 Convex polygon간의 충돌을 판별하는 알고리즘을 알아보자. 이 포스트에서는 SAT(Separating Axis Theorem)를 설명할 것이고 다음 포스트에서는 SAT보다 효율적이지만 조금은 더 복잡한 GJK(Gilbert Johnson Keerthi) distance 알고리즘을 이용해 충돌을 검출하는 방법을 설명한다.  
+이제 Convex polygon간의 충돌을 판별하는 알고리즘을 알아보자. 이 포스트에서는 SAT(Separating Axis Theorem)를 설명할 것이고 다음 포스트에서는 SAT보다 효율적이지만 조금 더 복잡한 GJK(Gilbert Johnson Keerthi) distance 알고리즘을 이용해 충돌을 검출하는 방법을 설명한다.  
 
 SAT(Separating Axis Theorem), 분리축 정리는 "두 도형이 충돌하지 않는다면 도형의 정사영이 겹치지 않는 분리축이 존재한다" 라는 내용이다. 아래 그림을 보자.  
 
 ![sat](/assets/img/collision/sat.png)_https://en.wikipedia.org/wiki/Hyperplane_separation_theorem 잘 안보이면 다크모드 해제!_  
 
-직관적으로 납득되기도 하지만 수학적 증명이 필요하다면 위 사진출처를 참고하자.  
+사진속 두 Convex shape의 초록 선(분리축) 위 정사영은 분리되어 있다. 직관적으로 정리가 납득되기도 하지만 수학적 증명이 필요하다면 위 사진출처를 참고하자.  
 
-이 정리를 이용해서 Convex polygon간의 충돌을 검출하려면 분리축을 찾고, 폴리곤을 투영(Projection)해서 영역이 분리되는지 판별 해 봐야한다. 그렇다면 분리축을 어떻게 찾을까? 이 알고리즘의 핵심은 분리축을 임의로 정하는것이 아니라는 것이다.  
+자 그렇다면 이 정리를 이용해서 Convex polygon간의 충돌을 검출하려면 적절히 후보 분리축을 찾고, 폴리곤을 분리축에 투영(Projection)해봐서 영역이 분리되는지 판별해 봐야 한다. 그렇다면 분리축을 어떻게 찾을까? 이 알고리즘을 구현하는데 있어서 핵심은 후보 분리축을 임의로 정하는것이 아니라는 것이다.  
 
-결론부터 말하면 분리축의 후보는 두 폴리곤 edge의 법선(Normal)이 된다. 두 폴리곤의 모든 법선에 대해서 투영결과가 하나라도 겹치지 않는다면 충돌이 아닌것이다. 시간복잡도는 O(n+m)이다.  
+결론부터 말하면 분리축의 후보는 두 폴리곤 edge의 법선(Normal)이고 두 폴리곤의 모든 법선에 대해서 투영결과가 하나라도 겹치지 않는다면 충돌이 아닌것이다. 
 
 왜 분리축의 후보가 edge의 노말일까? 분리축은 무수히 많을 수 있다.  
-두 Convex polygon이 충돌하는 경우를 잘 생각해 본다면, 모든 충돌은 한 폴리곤의 edge와 다른 폴리곤의 꼭지점이 충돌하는 경우로 볼 수 있다. 그래서 테스트 해 보려는 분리축 후보로 edge의 노말을 고른다면 분리축 투영 테스트는 자연스레 한 폴리곤의 edge와 다른 폴리곤의 꼭지점간의 테스트가 된다. (edge를 구성하는 꼭지점은 정사영의 끝점이 된다.) 모든 edge들의 노말을 분리축 후보로 해서 테스트하면 충돌 가능한 모든 경우를 검사하는것과 같다.  
+두 Convex polygon이 충돌하는 경우를 잘 생각해 본다면, 모든 충돌은 한 폴리곤의 edge와 다른 폴리곤의 버텍스가 충돌하는 경우로 볼 수 있다. 그래서 테스트해 보려는 분리축 후보로 edge의 노말을 고른다면 분리축 투영 테스트는 자연스레 한 폴리곤의 edge와 다른 폴리곤의 버텍스 간의 테스트가 된다. (edge의 버텍스는 정사영의 끝점이 된다.) 모든 edge들의 노말을 분리축 후보로 테스트하면 충돌이 발생 가능한 모든 시나리오를 검사하는 것과 같다.  
 
 코드는 다음과 같다.  
 
 ```c++
 
+// a에 대한 b의 signed distance를 계산함
+static float ComputeOverlap(const std::vector<Vec2>& va, const std::vector<Vec2>& vb)
+{
+    float overlap = -FLT_MAX;
+
+    for (uint32 i = 0; i < va.size(); i++)
+    {
+        const Vec2& va0 = va[i];
+        const Vec2& va1 = va[(i + 1) % va.size()];
+
+        // 오른손 좌표계, 반시계방향 버텍스 winding order에서 edge normal을 구함.
+        Vec2 normal = (va1 - va0).Normalized();
+        normal = Cross(normal, 1.0f); // == Cross(normal, {0.0f, 0.0f, 1.0f})
+
+        float separation = FLT_MAX;
+
+        for (uint32 j = 0; j < vb.size(); j++)
+        {
+            const Vec2& vb0 = vb[j];
+
+            // 현재 edge에 대해서 b 버텍스의 signed distance를 계산해서 최소값을 구함.
+            // signed distance가 양수라면 노말의 방향으로 떨어진, 즉 edge 바깥의 점,
+            // 음수라면 edge 내부의 점이라고 판별.
+            separation = Min(separation, Dot(normal, vb0 - va0));
+        }
+
+        // signed distance의 최대값, 즉 최소 max separation를 저장한다.
+        overlap = Max(separation, overlap);
+    }
+
+    return overlap;
+}
+
+bool SAT(Polygon* a, Polygon* b)
+{
+    const std::vector<Vec2>& va = a->GetVertices();
+    const std::vector<Vec2>& vb = b->GetVertices();
+
+    std::vector<Vec2> wva(va.size());
+    std::vector<Vec2> wvb(vb.size());
+
+    // local 버텍스들을 world space 버텍스로 변환
+    std::transform(va.begin(), va.end(), wva.begin(), [&](const Vec2& v) { return a->GetTransform() * v; });
+    std::transform(vb.begin(), vb.end(), wvb.begin(), [&](const Vec2& v) { return b->GetTransform() * v; });
+
+    // a의 edge에 대해 b의 버텍스를, b의 edge에 대해 a 버텍스를 모두 테스트 한다.
+    // 두 테스트 결과가 다 음수라면, 즉 Separating Axis가 없다면 충돌이다.
+    return ComputeOverlap(wva, wvb) < 0 && ComputeOverlap(wvb, wva) < 0;
+}
+
 ```
 
+위 코드는 signed distance라는 개념을 이용해서 SAT를 단순화한다.  
+
+![sd](/assets/img/collision/sd.png)_edge의 노말을 기준으로 바깥쪽은 + 거리, 안쪽으로는 - 거리_
+
+테스트하려는 edge에 대해 상대 버텍스들의 signed distance 구하고 최솟값만 비교해서 max separation(overlap)를 구한다. overlap이 음수라면 분리축을 찾지 못한 것이다.  
+a의 edge에 대해서 b를, 반대로 b의 edege에 대해서 a를 다 테스트해서 분리축을 찾지 못하면 충돌했다고 판별한다. (코드에 달아놓은 주석을 참고해 주세요. 그림을 그려보면 이해가 쉽습니다.)  
+
+시간 복잡도는 두 폴리곤의 버텍스 수만큼 테스트해야 하기 때문에 O(n+m)이 된다.
 
 ## Concave polygon의 충돌
+
+Concave polygon간의 충돌은 어떻게 판별할까?  
+
+단순하게 Concave polygon을 Convex polygon으로 쪼개서 검사한다. 이 과정을 Convex decomposition 이라고 한다.
+
+![cd](/assets/img/collision/cd.png)  
