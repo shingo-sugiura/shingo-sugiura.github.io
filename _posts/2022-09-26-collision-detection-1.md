@@ -1,8 +1,8 @@
 ---
 title: 충돌 감지 알고리즘 1
 date: 2022-09-26 03:50:00 +/-TTTT
-categories: [Physics, Programming]
-tags: [Algorithm, Physics, C++]  
+categories: [Algorithm, Programming]
+tags: [Physics, C++, Collision detection]  
 ---
 
 ~~컴퓨터가 고장나서 노트북으로 쓰기 시작하는 시리즈..~~
@@ -81,7 +81,7 @@ bool TestPoint(const AABB& aabb, const Vec2& p)
 
 ## Convex polygon이 점을 포함하는지 판별하기
 
-Convex polygon(볼록 폴리곤)은 모든 내각이 180도 아래로 구성된 도형을 말한다. 반대로는 Concave polygon이 있다. 앞으로 다룰 모든 충돌 관련 알고리즘은 Convex polygon에 대해 다룰것이다. Convex polygon의 특성이 여러 경우에서 간단한 형태로 계산할 수 있도록 해준다. 대표적으로 도형 내부 임의의 선분이 polygon의 edge와 충돌하지 않는 다는 특성이 있다.  
+Convex polygon(볼록 폴리곤)은 도형을 가로지르는 선분이 도형의 Edge를 딱 2번만 만나는 도형을 말한다. (Edge의 tangent나 꼭지점을 지나는 경우 말고) 반대로는 Concave polygon이 있다. 앞으로 다룰 모든 충돌 관련 알고리즘은 Convex polygon에 대해 다룰것이다. 충돌 검출에 있어서 Convex polygon의 특성은 여러 경우에서 간단한 형태로 계산할 수 있도록 해준다. ( 도형 내부 임의의 선분이 polygon의 edge와 충돌하지 않는 다는 특성 등등)
 
 ![convex-concave](/assets/img/collision/convex-concave.png)  
 
