@@ -70,9 +70,9 @@ SAT(Separating Axis Theorem), 분리축 정리는 "두 도형이 충돌하지 �
 ```c++
 
 // a에 대한 b의 signed distance를 계산함
-static float ComputeOverlap(const std::vector<Vec2>& va, const std::vector<Vec2>& vb)
+static float ComputeSeparation(const std::vector<Vec2>& va, const std::vector<Vec2>& vb)
 {
-    float overlap = -FLT_MAX;
+    float maxSeparation = -FLT_MAX;
 
     for (uint32 i = 0; i < va.size(); i++)
     {
@@ -80,26 +80,24 @@ static float ComputeOverlap(const std::vector<Vec2>& va, const std::vector<Vec2>
         const Vec2& va1 = va[(i + 1) % va.size()];
 
         // 오른손 좌표계, 반시계방향 버텍스 winding order에서 edge normal을 구함.
-        Vec2 normal = (va1 - va0).Normalized();
-        normal = Cross(normal, 1.0f); // == Cross(normal, {0.0f, 0.0f, 1.0f})
-
+        Vec2 normal = Cross((va1 - va0).Normalized(), 1.0f); // == Cross(edge, {0.0f, 0.0f, 1.0f})
         float separation = FLT_MAX;
 
         for (uint32 j = 0; j < vb.size(); j++)
         {
             const Vec2& vb0 = vb[j];
 
-            // 현재 edge에 대해서 b 버텍스의 signed distance를 계산해서 최소값을 구함.
+            // 현재 edge에 대해서 b 버텍스의 signed distance를 계산하고 최소값만 keep함.
             // signed distance가 양수라면 노말의 방향으로 떨어진, 즉 edge 바깥의 점,
             // 음수라면 edge 내부의 점이라고 판별.
             separation = Min(separation, Dot(normal, vb0 - va0));
         }
 
-        // signed distance의 최대값, 즉 최소 max separation를 저장한다.
-        overlap = Max(separation, overlap);
+        // signed distance의 최대값, 즉 max separation를 저장한다.
+        maxSeparation = Max(separation, maxSeparation);
     }
 
-    return overlap;
+    return maxSeparation;
 }
 
 bool SAT(Polygon* a, Polygon* b)
@@ -116,7 +114,7 @@ bool SAT(Polygon* a, Polygon* b)
 
     // a의 edge에 대해 b의 버텍스를, b의 edge에 대해 a 버텍스를 모두 테스트 한다.
     // 두 테스트 결과가 다 음수라면, 즉 Separating Axis가 없다면 충돌이다.
-    return ComputeOverlap(wva, wvb) < 0 && ComputeOverlap(wvb, wva) < 0;
+    return ComputeSeparation(wva, wvb) < 0 && ComputeSeparation(wvb, wva) < 0;
 }
 
 ```
@@ -125,10 +123,10 @@ bool SAT(Polygon* a, Polygon* b)
 
 ![sd](/assets/img/collision/sd.png)_edge의 노말을 기준으로 바깥쪽은 + 거리, 안쪽으로는 - 거리_
 
-테스트하려는 edge에 대해 상대 버텍스들의 signed distance 구하고 최솟값만 비교해서 max separation(overlap)를 구한다. overlap이 음수라면 분리축을 찾지 못한 것이다.  
-a의 edge에 대해서 b를, 반대로 b의 edege에 대해서 a를 다 테스트해서 분리축을 찾지 못하면 충돌했다고 판별한다. (코드에 달아놓은 주석을 참고해 주세요. 그림을 그려보면 이해가 쉽습니다.)  
+테스트하려는 edge에 대해 상대 버텍스들의 signed distance 구하고 최솟값만 비교해서 max separation(overlap)를 구한다. max separation이 음수라면 분리축을 찾지 못한 것이다.  
+a의 edge에 대해서 b를, 반대로 b의 edge에 대해서 a를 다 테스트해서 분리축을 찾지 못하면 충돌했다고 판별한다. (코드에 달아놓은 주석을 참고해 주세요. 그림을 그려보면 이해가 쉽습니다.)  
 
-시간 복잡도는 두 폴리곤의 버텍스 수만큼 테스트해야 하기 때문에 O(n+m)이 된다.
+시간 복잡도는 코드를 보면 알 수 있듯이 O(n*m)이 된다.  
 
 ## Concave polygon의 충돌
 
