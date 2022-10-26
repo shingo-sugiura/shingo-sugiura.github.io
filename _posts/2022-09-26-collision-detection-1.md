@@ -97,7 +97,7 @@ local space에 vertices를 두고 transform을 이용해 오브젝트를 정의�
 
 ![polygon](/assets/img/collision/polygon.png)  
 
-어떤 점이 폴리곤 내부에 포함되어 있는지 확인하기 위해 우리는 정점들의 winding order가 일관적이라는 점을 이용한다. 코드는 다음과 같다.  
+우선 코드는 아래와 같다.
 
 ```c++
 bool TestPoint(const Polygon& polygon, const Vec2& p)
@@ -105,17 +105,19 @@ bool TestPoint(const Polygon& polygon, const Vec2& p)
     const std::vector<Vec2>& vertices = polygon.vertices;
     Vec2 localP = MulT(polygon.transform, p); // ----------------------------------------- a
 
-    float dir = Cross(vertices[0] - localP, vertices[1] - localP); // -------------------- b
     size_t count = vertices.size();
-
-    for (size_t i = 1; i < count; i++)
+    size_t i0 = count - 1;
+    for (size_t i1 = 0; i1 < count; i1++)
     {
-        float nDir = Cross(vertices[i] - localP, vertices[(i + 1) % count] - localP); // - c
+        Vec2 normal = Cross(vertices[i1] - vertices[i0], 1.0f); // ----------------------- b
+        // normal.Normalize(); <- 정규화 안해도 된다.
 
-        if (dir * nDir < 0) // ----------------------------------------------------------- d
+        if (Dot(normal, localP - vertices[i0]) > 0.0f) // -------------------------------- c
         {
             return false;
         }
+
+        i0 = i1;
     }
 
     return true;
@@ -123,12 +125,10 @@ bool TestPoint(const Polygon& polygon, const Vec2& p)
 ```
 
 우선 a 부분에서 query point p를 폴리곤의 local space로 가져온다. (MulT 함수는 vector를 inverse transform 해주는 함수이다.)  
+b 부분에서는 폴리곤의 면의 normal을 계산한다. Polygon 구조체에 Normal을 미리 계산해 두었다면 인덱스로 직접 가져와도 된다.
+마지막으로 c 부분에서 폴리곤의 모든 edge에 대해 signed distance가 음수임을 확인해서 점이 폴리곤 내부에 있다고 판별한다. 점이 edge normal을 기준으로 내부인지, 외부인지 기준점(vertices[i0]) 을 이용해서 Dot 연산으로 판별하는 것이다.
 
-점 p가 폴리곤 내부에 있다면 점 p 에서 n번째 정점으로 향하는 벡터와 n+1번째 정점으로 향하는 벡터, 이 두 벡터간의 외적 결과 벡터는 항상 같은 방향일 것이다. (2d에서는 외적 결과가 (0, 0, scalar) 형태로 x, y 값은 항상 0이므로 z값 scalar만 리턴하도록 Cross 함수를 작성한다.)  
-
-b 부분에서 p에서 0번 정점으로 향하는 벡터와 p에서 1번 정점으로 향하는 벡터를 외적하고 그 값(방향)을 저장한다.  
-
-다음으로 for문을 돌면서 Cross(p to v_n, p to v_n+1) 을 계산하면서(c 라인) b에서 처음 구한 방향과 같은 방향인지 확인한다(d 라인) 모두 같은 방향이면 폴리곤은 점을 포함한다. 정점 winding order가 일정하기 때문에 확인 할 수 있다.
+![polygon](/assets/img/collision/tpsd.png)  
 
 ## 정리
 
