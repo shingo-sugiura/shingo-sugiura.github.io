@@ -107,7 +107,7 @@ bool TestPoint(const Polygon& polygon, const Vec2& p)
 
     size_t count = vertices.size();
     size_t i0 = count - 1;
-    for (size_t i1 = 0; i1 < count; i1++)
+    for (size_t i1 = 0; i1 < count; ++i1)
     {
         Vec2 normal = Cross(vertices[i1] - vertices[i0], 1.0f); // ----------------------- b
         // normal.Normalize(); <- 정규화 안해도 된다.

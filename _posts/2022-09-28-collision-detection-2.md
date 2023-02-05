@@ -74,7 +74,7 @@ static float ComputeSeparation(const std::vector<Vec2>& va, const std::vector<Ve
 {
     float maxSeparation = -FLT_MAX;
 
-    for (uint32 i = 0; i < va.size(); i++)
+    for (uint32 i = 0; i < va.size(); ++i)
     {
         const Vec2& va0 = va[i];
         const Vec2& va1 = va[(i + 1) % va.size()];
@@ -83,7 +83,7 @@ static float ComputeSeparation(const std::vector<Vec2>& va, const std::vector<Ve
         Vec2 normal = Cross((va1 - va0).Normalized(), 1.0f); // == Cross(edge, {0.0f, 0.0f, 1.0f})
         float separation = FLT_MAX;
 
-        for (uint32 j = 0; j < vb.size(); j++)
+        for (uint32 j = 0; j < vb.size(); ++j)
         {
             const Vec2& vb0 = vb[j];
 
@@ -114,7 +114,7 @@ bool SAT(Polygon* a, Polygon* b)
 
     // a의 edge에 대해 b의 버텍스를, b의 edge에 대해 a 버텍스를 모두 테스트 한다.
     // 두 테스트 결과가 다 음수라면, 즉 Separating Axis가 없다면 충돌이다.
-    return ComputeSeparation(wva, wvb) < 0 && ComputeSeparation(wvb, wva) < 0;
+    return ComputeSeparation(wva, wvb) < 0.0f && ComputeSeparation(wvb, wva) < 0.0f;
 }
 
 ```
