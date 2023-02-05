@@ -19,8 +19,9 @@ math: true
 
 ## Modeling and solving constraint  
 
-어떤 오브젝트의 position 정보를 이용하여 position constraint, $C=0$를 정의한다.  
-$C$를 미분하여 velocity constraint, $ \dot{C} = Jv$을 구한다.  
+어떤 오브젝트의 position 정보 $q$를 이용하여 position constraint, $C(q)=0$를 정의한다.  
+$C$를 미분하여 velocity constraint, $\dot{C} = Jv$을 구한다.  
+여기서 $J$는 jacobian matrix다. $( \dot{C} = \frac{\partial{C}}{\partial{q}} \dot{q}) $
 
 $\bar v_2 = v_1 + M^{-1} \cdot F_{ext} \cdot \Delta t$  
 
