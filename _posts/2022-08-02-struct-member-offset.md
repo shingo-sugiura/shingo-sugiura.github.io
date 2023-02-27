@@ -1,10 +1,12 @@
 ---
-title: Offset and alignment of member variables, 멤버 변수 오프셋과 정렬
+title: 멤버 변수 오프셋과 정렬
 date: 2022-08-02 20:10:00 +/-TTTT
 categories: [Note, Programming]
 tags: [Programming, C++]
 # math: true
 ---
+
+Offset and alignment of member variables, 멤버 변수 오프셋과 정렬
 
 ## 멤버 변수의 offset
 

@@ -2,7 +2,7 @@
 title: Rotating reference frame
 date: 2022-01-08 09:50:00 +/-TTTT
 categories: [Note, Math]
-tags: [math]  
+tags: [Math]  
 math: true
 ---
 
