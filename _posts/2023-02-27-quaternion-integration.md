@@ -18,7 +18,7 @@ Angular velocity vector를 사원수 orientation에 적용(수치 적분) 하는
 
 ## Quaternion differentiation
 
-$\hat q(t)$가 $t$ 에서의 rotation quaternion이고, $r$은 unit time에 대한 rotational motion 이라고 생각한다면,
+$\hat q(t)$가 $t$ 에서의 rotation quaternion이고, $\hat r$은 unit time에 대한 rotational motion 이라고 생각한다면,
 
 $$ \hat q(0)=\hat q_0 $$ 
 
@@ -26,7 +26,7 @@ $$ \hat q(t)=\hat r^t \hat q_0 $$
 
 위와 같이 쓸 수 있다.  
 
-unit quatertnion $\hat r$은 오일러 공식을 이용해 아래와 같이 지수 함수로 표현 할 수 있다.  
+unit quaternion $\hat r$은 오일러 공식을 이용해 아래와 같이 지수 함수로 표현 할 수 있다.  
 
 $$ \hat r=e^{\frac \theta 2 \vec u} $$  
 
