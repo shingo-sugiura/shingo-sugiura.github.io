@@ -1,8 +1,8 @@
 ---
 title: Pairing function, 짝짓기 함수
 date: 2022-01-04 21:53:00 +/-TTTT
-categories: [Note, Math]
-tags: [math]  
+categories: [Programming, Note]
+tags: [Math]  
 math: true
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: Constraints in physics engine
 date: 2022-03-01 08:50:00 +/-TTTT
-categories: [Note, Physics]
+categories: [Programming, Physics]
 tags: [Physics, Physics Engine]
 math: true
 ---

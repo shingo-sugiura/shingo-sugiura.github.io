@@ -1,8 +1,8 @@
 ---
 title: 멤버 변수 오프셋과 정렬
 date: 2022-08-02 20:10:00 +/-TTTT
-categories: [Note, Programming]
-tags: [Programming, C++]
+categories: [Programming, C++]
+tags: [Note, Programming, C++]
 # math: true
 ---
 

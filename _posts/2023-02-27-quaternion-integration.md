@@ -1,8 +1,8 @@
 ---
 title: Quaternion differentiation
 date: 2023-02-27 22:00:00 +/-TTTT
-categories: [Note, Math]
-tags: [Math]  
+categories: [Math]
+tags: [Note]  
 math: true
 ---
 
