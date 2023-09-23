@@ -1,5 +1,5 @@
 # Blog  
 
-Most blog posts are written in Korean.  
+Note of my random thoughts and ideas 
 
-https://sopiro.github.io/
+https://shingo-sugiura.github.io/
